@@ -7,3 +7,4 @@ packages:
 allowBuilds:
   "@scarf/scarf": false
   "@swc/core": true
+  msgpackr-extract: false
