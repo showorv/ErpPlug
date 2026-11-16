@@ -6,8 +6,8 @@ import {
   HttpStatus,
   Logger,
 } from "@nestjs/common";
+import { type ApiErrorBody, defaultErrorCode } from "@erpplug/contracts";
 import type { Request, Response } from "express";
-import { type ApiErrorBody, DEFAULT_ERROR_CODES } from "./api-error";
 
 /** Turns every thrown error into the standard ApiErrorBody. Registered globally in app.setup.ts. */
 @Catch()
@@ -46,7 +46,7 @@ export class AllExceptionsFilter implements ExceptionFilter {
     exception: unknown,
     status: number,
   ): { code: string; message: string; details?: unknown } {
-    const fallbackCode = DEFAULT_ERROR_CODES[status] ?? `HTTP_${status}`;
+    const fallbackCode = defaultErrorCode(status);
 
     if (!(exception instanceof HttpException) || status >= 500) {
       return { code: fallbackCode, message: "Something went wrong. Please try again." };

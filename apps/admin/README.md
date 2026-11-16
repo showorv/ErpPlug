@@ -13,4 +13,6 @@ React Router 8, TanStack Query 5, Vitest. Differences:
 - **No translation files.** This is an internal English-only tool; the tenant workspace is the
   translated product.
 - Sidebar layout instead of a top bar.
+- **UI kit** page at `/ui`: the living reference for `packages/ui`, with the data table running
+  against a fake server (`src/features/ui-kit/`) that follows the real list conventions.
 - Operators will use separate credentials with mandatory MFA (BRD 11.4), handled in Phase 1.

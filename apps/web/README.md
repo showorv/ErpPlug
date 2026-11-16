@@ -12,7 +12,8 @@ payload in Phase 1; each module's screens are lazy-loaded (BRD 8.5).
 | Piece        | Choice                               | Where                     |
 | ------------ | ------------------------------------ | ------------------------- |
 | Build / dev  | Vite 8, React 19, TypeScript 6       | `vite.config.ts`          |
-| Styling      | Tailwind CSS 4 (`@tailwindcss/vite`) | `src/index.css`           |
+| Styling      | Tailwind CSS 4 + `@erpplug/ui` theme | `src/index.css`           |
+| Components   | `@erpplug/ui` (shadcn/ui based)      | `packages/ui`             |
 | Routing      | React Router 8, data mode            | `src/app/routes.tsx`      |
 | Server state | TanStack Query 5                     | `src/app/query-client.ts` |
 | Translations | i18next + react-i18next, typed keys  | `src/i18n/`               |
@@ -28,5 +29,6 @@ payload in Phase 1; each module's screens are lazy-loaded (BRD 8.5).
 - React Router 8: import `RouterProvider` from `react-router/dom`, everything else from `react-router`.
   (`react-router-dom` no longer exists.)
 - `@/` is an alias for `src/`.
-- Shared components (data table, forms, page states) come from `packages/ui` (Phase 0, days 7-8),
-  and the API types from `packages/contracts`.
+- Shared components (data table, forms, page states) come from `packages/ui`, and the API types
+  and list conventions from `packages/contracts`. The shared components' built-in text is
+  translated through `src/i18n/ui-strings.tsx` (keys under `ui.*`).

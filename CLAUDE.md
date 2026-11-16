@@ -25,6 +25,8 @@ When a task names a BRD section (for example "BRD 9.3"), read that section befor
 - Every pull request adds or updates tests; a new table must pass the isolation suite.
 - All tenant-facing UI strings (`apps/web`, module `web/` folders) go through translation files from day one (Bangla comes right after the pilot). The operator console `apps/admin` is internal and English-only.
 - Contracts first: request/response types land in `packages/contracts` in a small PR before the endpoint or screen is built.
+- List endpoints declare their query with `defineListQuery` (contracts) and parse it with `ListQueryPipe`; list screens use `DataTable` + `useListQueryState` from `packages/ui`. See `packages/contracts/README.md`.
+- Screens use `packages/ui` components and theme tokens (`bg-background`, `text-muted-foreground`), never raw palette colours. The live reference is the admin UI kit page (`/ui`).
 
 ## Ownership (who reviews what)
 

@@ -6,6 +6,7 @@ import { RouterProvider } from "react-router/dom";
 import { createQueryClient } from "./app/query-client";
 import { routes } from "./app/routes";
 import "./i18n";
+import { TranslatedUiStrings } from "./i18n/ui-strings";
 import "./index.css";
 
 const router = createBrowserRouter(routes);
@@ -14,7 +15,9 @@ const queryClient = createQueryClient();
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <TranslatedUiStrings>
+        <RouterProvider router={router} />
+      </TranslatedUiStrings>
     </QueryClientProvider>
   </StrictMode>,
 );

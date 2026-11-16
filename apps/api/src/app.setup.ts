@@ -1,4 +1,5 @@
 import { type INestApplication, VersioningType } from "@nestjs/common";
+import { HEADERS } from "@erpplug/contracts";
 import { ConfigService } from "@nestjs/config";
 import { DocumentBuilder, SwaggerModule } from "@nestjs/swagger";
 import { Logger } from "nestjs-pino";
@@ -23,7 +24,7 @@ export function configureApp(app: INestApplication): void {
   app.enableCors({
     origin: config.get("CORS_ORIGINS", { infer: true }),
     credentials: true,
-    exposedHeaders: ["x-request-id"],
+    exposedHeaders: [HEADERS.requestId],
   });
 
   const openApi = new DocumentBuilder()

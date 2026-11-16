@@ -1,9 +1,10 @@
 import { randomUUID } from "node:crypto";
 import type { IncomingMessage, ServerResponse } from "node:http";
+import { HEADERS } from "@erpplug/contracts";
 import type { Params } from "nestjs-pino";
 import type { Env } from "../../config/env";
 
-const REQUEST_ID_HEADER = "x-request-id";
+const REQUEST_ID_HEADER = HEADERS.requestId;
 
 /**
  * Structured JSON logs via pino. Every line carries the request id; tenant and module ids are

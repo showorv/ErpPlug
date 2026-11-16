@@ -10,7 +10,7 @@ export function AppShell() {
 
   return (
     <div className="flex min-h-dvh flex-col">
-      <header className="border-b border-slate-200 bg-white">
+      <header className="border-b border-border bg-background">
         <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
           <span className="text-lg font-semibold">{t("app.name")}</span>
           <nav className="flex gap-4 text-sm">
@@ -18,7 +18,9 @@ export function AppShell() {
               to="/"
               end
               className={({ isActive }) =>
-                isActive ? "font-medium text-slate-900" : "text-slate-500 hover:text-slate-900"
+                isActive
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground hover:text-foreground"
               }
             >
               {t("nav.home")}

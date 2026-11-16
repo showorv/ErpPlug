@@ -4,8 +4,8 @@ export function NotFoundPage() {
   return (
     <section className="space-y-3">
       <h1 className="text-2xl font-semibold">Page not found</h1>
-      <p className="text-slate-600">The page you are looking for does not exist.</p>
-      <Link to="/" className="text-sm font-medium text-slate-900 underline">
+      <p className="text-muted-foreground">The page you are looking for does not exist.</p>
+      <Link to="/" className="text-sm font-medium text-foreground underline">
         Back to dashboard
       </Link>
     </section>
@@ -20,7 +20,7 @@ export function RouteErrorPage() {
   return (
     <section className="mx-auto max-w-xl space-y-3 px-4 py-16">
       <h1 className="text-2xl font-semibold">Something went wrong</h1>
-      <a href="/" className="text-sm font-medium text-slate-900 underline">
+      <a href="/" className="text-sm font-medium text-foreground underline">
         Back to dashboard
       </a>
     </section>
