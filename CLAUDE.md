@@ -1,0 +1,50 @@
+# ErpPlug — rules for all code in this repo
+
+Source of truth: `docs/BRD.pdf` (requirements and architecture) and `docs/build-plan.pdf` (phases, scope cut, work split).
+When a task names a BRD section (for example "BRD 9.3"), read that section before writing code.
+
+## Never break these
+
+- Every business table has a non-null `tenant_id` and an RLS policy. No exceptions.
+- Business code never imports the raw Prisma client. Use the tenant-scoped client from `kernel/tenancy`.
+- No raw SQL outside the kernel helper that sets the tenant.
+- A module imports another module only through its `contracts/` folder, and only if listed in `requires` or `optional` in its manifest.
+- The kernel never imports from `modules/`.
+- Cross-module links are stored as IDs. No foreign keys across module schemas unless the target is in `requires`.
+- "When X happens in A, B does Y" is an event subscription in B, never a call from A.
+- Routes, permissions, events, settings, queue names and cache keys start with the module key.
+- Modules never read plans, prices or invoices. Ask the entitlements service.
+- Kernel Billing (our fees) and the Accounting module (tenant's books) share no tables and no code.
+
+## Conventions
+
+- API: `/api/v1/{module}/...`, shared pagination, filter, sort and error format from `packages/contracts`.
+- Every controller action declares its permission with a decorator.
+- New module = copy `modules/notes` and rename.
+- Every pull request adds or updates tests; a new table must pass the isolation suite.
+- All UI strings go through translation files from day one (Bangla comes right after the pilot).
+- Contracts first: request/response types land in `packages/contracts` in a small PR before the endpoint or screen is built.
+
+## Ownership (who reviews what)
+
+| Path                                                                                      | Owner   |
+| ----------------------------------------------------------------------------------------- | ------- |
+| `kernel/`, `prisma/`, `packages/module-kit/`, `modules/accounting/`, `modules/inventory/` | Uday    |
+| `apps/web/`, `apps/admin/`, `packages/ui/`, `infra/`, contacts, products, sales, purchase | Showrov |
+
+If a task seems to need a change in the other person's paths, stop and raise it instead of editing.
+
+## Git workflow
+
+- `main` only changes through reviewed pull requests. Never push to `main` directly.
+- Showrov works on the `showrov` branch; Uday on his own branch.
+- Before starting work: `git fetch origin && git merge origin/main` into your branch (merge, don't rebase a pushed branch).
+- Only one open pull request may add a Prisma migration at a time; announce it before starting.
+- One ADR in `docs/adr/` per irreversible choice.
+
+## Commands
+
+- `pnpm install` — install everything
+- `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test` — run across the workspace via Turborepo
+- `pnpm format` / `pnpm format:check` — Prettier
+- Coming in Phase 0: `pnpm db:migrate`, `pnpm test:isolation`
