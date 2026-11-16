@@ -8,7 +8,14 @@ import globals from "globals";
 import reactHooks from "eslint-plugin-react-hooks";
 import reactRefresh from "eslint-plugin-react-refresh";
 
-const reactFiles = ["apps/web/**/*.{ts,tsx}", "apps/admin/**/*.{ts,tsx}", "**/web/**/*.{ts,tsx}"];
+const reactAppFiles = [
+  "apps/web/**/*.{ts,tsx}",
+  "apps/admin/**/*.{ts,tsx}",
+  "**/web/**/*.{ts,tsx}",
+];
+// packages/ui is a component library (shadcn files export variants next to components), so it
+// gets the hooks rules but not the fast-refresh export rule.
+const reactFiles = [...reactAppFiles, "packages/ui/**/*.{ts,tsx}"];
 
 export default tseslint.config(
   {
@@ -29,6 +36,6 @@ export default tseslint.config(
   },
   // React apps and every module's web/ folder: hooks rules + Vite fast-refresh safety.
   { files: reactFiles, ...reactHooks.configs.flat["recommended-latest"] },
-  { files: reactFiles, ...reactRefresh.configs.vite },
+  { files: reactAppFiles, ...reactRefresh.configs.vite },
   prettier,
 );

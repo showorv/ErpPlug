@@ -1,19 +1,14 @@
 /**
  * Minimal API client. Calls go to /api on the same origin (Vite proxies to NestJS in development).
- * The error type mirrors the API's standard error format; both move to packages/contracts and
- * packages/sdk in Phase 0 days 7-8 / Phase 1.
+ * Errors arrive in the standard shape from @erpplug/contracts and are thrown as ApiError.
+ * The generated, typed client in packages/sdk replaces this in Phase 1.
  */
-export interface ApiErrorBody {
-  error: {
-    status: number;
-    code: string;
-    message: string;
-    details?: unknown;
-    requestId: string;
-    path: string;
-    timestamp: string;
-  };
-}
+import {
+  ERROR_CODES,
+  isApiErrorBody,
+  type ValidationIssue,
+  isValidationIssueList,
+} from "@erpplug/contracts";
 
 export class ApiError extends Error {
   constructor(
@@ -26,6 +21,11 @@ export class ApiError extends Error {
     super(message);
     this.name = "ApiError";
   }
+
+  /** Per-field problems for VALIDATION_FAILED / INVALID_QUERY errors, otherwise empty. */
+  get issues(): ValidationIssue[] {
+    return isValidationIssueList(this.details) ? this.details : [];
+  }
 }
 
 export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> {
@@ -37,13 +37,13 @@ export async function apiFetch<T>(path: string, init?: RequestInit): Promise<T> 
       headers: { Accept: "application/json", ...init?.headers },
     });
   } catch {
-    throw new ApiError(0, "NETWORK_ERROR", "The server could not be reached.");
+    throw new ApiError(0, ERROR_CODES.NETWORK_ERROR, "The server could not be reached.");
   }
 
   if (res.ok) return (await res.json()) as T;
 
-  const body = (await res.json().catch(() => null)) as ApiErrorBody | null;
-  if (body?.error) {
+  const body: unknown = await res.json().catch(() => null);
+  if (isApiErrorBody(body)) {
     const e = body.error;
     throw new ApiError(e.status, e.code, e.message, e.requestId, e.details);
   }

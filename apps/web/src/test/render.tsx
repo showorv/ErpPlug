@@ -3,6 +3,7 @@ import { render } from "@testing-library/react";
 import { createMemoryRouter } from "react-router";
 import { RouterProvider } from "react-router/dom";
 import { routes } from "@/app/routes";
+import { TranslatedUiStrings } from "@/i18n/ui-strings";
 
 /** Renders the real route table at `path`, with a fresh query client that never retries. */
 export function renderRoute(path: string) {
@@ -10,7 +11,9 @@ export function renderRoute(path: string) {
   const router = createMemoryRouter(routes, { initialEntries: [path] });
   return render(
     <QueryClientProvider client={queryClient}>
-      <RouterProvider router={router} />
+      <TranslatedUiStrings>
+        <RouterProvider router={router} />
+      </TranslatedUiStrings>
     </QueryClientProvider>,
   );
 }

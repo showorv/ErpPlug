@@ -6,8 +6,8 @@ export function NotFoundPage() {
   return (
     <section className="space-y-3">
       <h1 className="text-2xl font-semibold">{t("errors.notFoundTitle")}</h1>
-      <p className="text-slate-600">{t("errors.notFoundBody")}</p>
-      <Link to="/" className="text-sm font-medium text-slate-900 underline">
+      <p className="text-muted-foreground">{t("errors.notFoundBody")}</p>
+      <Link to="/" className="text-sm font-medium text-foreground underline">
         {t("errors.backHome")}
       </Link>
     </section>
@@ -23,7 +23,7 @@ export function RouteErrorPage() {
   return (
     <section className="mx-auto max-w-xl space-y-3 px-4 py-16">
       <h1 className="text-2xl font-semibold">{t("errors.unexpectedTitle")}</h1>
-      <a href="/" className="text-sm font-medium text-slate-900 underline">
+      <a href="/" className="text-sm font-medium text-foreground underline">
         {t("errors.backHome")}
       </a>
     </section>
