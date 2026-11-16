@@ -4,3 +4,6 @@ packages:
   - "kernel"
   - "modules/*"
   - "prisma"
+allowBuilds:
+  "@scarf/scarf": false
+  "@swc/core": true

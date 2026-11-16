@@ -25,6 +25,9 @@ Requires Node 24+ (see `.nvmrc`) and pnpm (`corepack enable pnpm`).
 
 ```bash
 pnpm install
+pnpm setup:env   # creates the git-ignored .env with random local passwords
+pnpm infra:up    # PostgreSQL, Redis, object storage, Mailpit (needs Docker Desktop)
+pnpm dev         # every app in watch mode
 ```
 
-Local infrastructure (PostgreSQL, Redis, MinIO, Mailpit) via Docker Compose arrives in Phase 0, days 3-4.
+See [infra/README.md](infra/README.md) for the local services.

@@ -13,7 +13,13 @@
     "typecheck": "turbo run typecheck",
     "test": "turbo run test",
     "format": "prettier --write .",
-    "format:check": "prettier --check ."
+    "format:check": "prettier --check .",
+    "infra:up": "docker compose --env-file .env -f infra/docker-compose.yml up -d --wait",
+    "infra:down": "docker compose --env-file .env -f infra/docker-compose.yml down",
+    "infra:reset": "docker compose --env-file .env -f infra/docker-compose.yml down -v",
+    "infra:ps": "docker compose --env-file .env -f infra/docker-compose.yml ps",
+    "infra:logs": "docker compose --env-file .env -f infra/docker-compose.yml logs -f",
+    "setup:env": "node scripts/setup-env.mjs"
   },
   "devDependencies": {
     "@eslint/js": "^10.0.1",

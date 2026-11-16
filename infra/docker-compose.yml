@@ -1,0 +1,63 @@
+# Local development infrastructure for ErpPlug.
+# First time: pnpm setup:env (creates the git-ignored .env with random local passwords).
+# Start:  pnpm infra:up      Stop: pnpm infra:down      Wipe data: pnpm infra:reset
+# Credentials come only from .env; none are written in this file.
+name: erpplug
+
+services:
+  postgres:
+    image: postgres:16.16-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:?missing in .env, run pnpm setup:env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?missing in .env, run pnpm setup:env}
+      POSTGRES_DB: ${POSTGRES_DB:?missing in .env, run pnpm setup:env}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      # *.sql / *.sh files here run once, on first start with an empty volume.
+      # Uday adds the migrator and app roles here (BRD 9.3).
+      - ./postgres/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  redis:
+    image: redis:8.8.4-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # S3-compatible object storage. Stands in for MinIO, whose free Docker image is no longer published.
+  # S3 API: http://localhost:9000   Web console: http://localhost:9001/rustfs/console/
+  object-storage:
+    image: rustfs/rustfs:1.0.6
+    environment:
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:?missing in .env, run pnpm setup:env}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:?missing in .env, run pnpm setup:env}
+      RUSTFS_CONSOLE_ENABLE: "true"
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    volumes:
+      - object-storage-data:/data
+
+  # Catches every email the app sends. Web UI: http://localhost:8025
+  mailpit:
+    image: axllent/mailpit:v1.33.1
+    ports:
+      - "1025:1025"
+      - "8025:8025"
+
+volumes:
+  postgres-data:
+  redis-data:
+  object-storage-data:
