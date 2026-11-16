@@ -19,7 +19,8 @@ export default defineConfig({
     env: {
       NODE_ENV: "test",
       LOG_LEVEL: "silent",
-      DATABASE_URL: "postgresql://erpplug:erpplug@localhost:5432/erpplug",
+      // Never connected to in these tests; only has to be a valid URL.
+      DATABASE_URL: "postgresql://localhost:5432/erpplug_test",
       REDIS_URL: "redis://localhost:6379",
     },
   },

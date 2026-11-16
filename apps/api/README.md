@@ -10,7 +10,7 @@ NestJS host: composes the kernel and every business module into one HTTP API.
 From the repo root, with Docker Desktop running:
 
 ```bash
-cp .env.example .env   # once
+pnpm setup:env         # once: creates .env with random local passwords
 pnpm infra:up          # Postgres, Redis, object storage, Mailpit
 pnpm --filter @erpplug/api dev
 ```

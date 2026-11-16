@@ -1,15 +1,16 @@
 # Local development infrastructure for ErpPlug.
+# First time: pnpm setup:env (creates the git-ignored .env with random local passwords).
 # Start:  pnpm infra:up      Stop: pnpm infra:down      Wipe data: pnpm infra:reset
-# Credentials here are for local development only. Never reuse them anywhere else.
+# Credentials come only from .env; none are written in this file.
 name: erpplug
 
 services:
   postgres:
     image: postgres:16.16-alpine
     environment:
-      POSTGRES_USER: erpplug
-      POSTGRES_PASSWORD: erpplug
-      POSTGRES_DB: erpplug
+      POSTGRES_USER: ${POSTGRES_USER:?missing in .env, run pnpm setup:env}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?missing in .env, run pnpm setup:env}
+      POSTGRES_DB: ${POSTGRES_DB:?missing in .env, run pnpm setup:env}
     ports:
       - "5432:5432"
     volumes:
@@ -18,7 +19,7 @@ services:
       # Uday adds the migrator and app roles here (BRD 9.3).
       - ./postgres/init:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U erpplug -d erpplug"]
+      test: ["CMD-SHELL", 'pg_isready -U "$${POSTGRES_USER}" -d "$${POSTGRES_DB}"']
       interval: 5s
       timeout: 3s
       retries: 10
@@ -40,8 +41,8 @@ services:
   object-storage:
     image: rustfs/rustfs:1.0.6
     environment:
-      RUSTFS_ACCESS_KEY: erpplug
-      RUSTFS_SECRET_KEY: erpplug-secret
+      RUSTFS_ACCESS_KEY: ${S3_ACCESS_KEY:?missing in .env, run pnpm setup:env}
+      RUSTFS_SECRET_KEY: ${S3_SECRET_KEY:?missing in .env, run pnpm setup:env}
       RUSTFS_CONSOLE_ENABLE: "true"
     ports:
       - "9000:9000"

@@ -12,6 +12,8 @@ import { HealthController } from "./health/health.controller";
       isGlobal: true,
       cache: true,
       validate: validateEnv,
+      // Lets .env build DATABASE_URL from POSTGRES_* so the password is written only once.
+      expandVariables: true,
       // Works whether the app is started from apps/api (turbo, pnpm dev) or from the repo root.
       envFilePath: [resolve(process.cwd(), ".env"), resolve(process.cwd(), "../../.env")],
     }),

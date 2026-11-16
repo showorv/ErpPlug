@@ -17,7 +17,7 @@ class ThrowingController {
 
   @Get("crash")
   crash(): never {
-    throw new Error("database password is hunter2");
+    throw new Error("internal detail INTERNAL-SENTINEL-42");
   }
 }
 
@@ -81,7 +81,7 @@ describe("API skeleton (e2e)", () => {
   it("hides internal details of unexpected errors", async () => {
     const res = await request(app.getHttpServer()).get("/api/v1/test-errors/crash").expect(500);
     expect(res.body.error.code).toBe("INTERNAL_ERROR");
-    expect(JSON.stringify(res.body)).not.toContain("hunter2");
+    expect(JSON.stringify(res.body)).not.toContain("INTERNAL-SENTINEL-42");
   });
 
   it("serves the OpenAPI document and the Swagger UI", async () => {

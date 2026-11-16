@@ -2,7 +2,7 @@ import { describe, expect, it } from "vitest";
 import { validateEnv } from "./env";
 
 const valid = {
-  DATABASE_URL: "postgresql://erpplug:erpplug@localhost:5432/erpplug",
+  DATABASE_URL: "postgresql://localhost:5432/erpplug_test",
   REDIS_URL: "redis://localhost:6379",
 };
 
