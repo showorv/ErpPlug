@@ -53,7 +53,7 @@ If a task seems to need a change in the other person's paths, stop and raise it 
 - `pnpm infra:up` / `infra:down` / `infra:reset` / `infra:ps` / `infra:logs` — local Docker services (see `infra/README.md`)
 - `pnpm setup:env` — create `.env` with random local passwords (once per machine)
 - `pnpm --filter @erpplug/api dev` (or `@erpplug/web`, `@erpplug/admin`) — run one app only
-- Dev URLs: API http://localhost:3000 (Swagger at /api/docs), web http://localhost:5173, admin http://localhost:5174
+- Dev URLs: API http://localhost:3000 (Swagger at /api/docs), web http://localhost:5173, admin http://localhost:5174; the worker (no HTTP) starts with `pnpm dev` too
 - Coming in Phase 0: `pnpm db:migrate`, `pnpm test:isolation`
 
 ## Stack notes
@@ -64,4 +64,5 @@ If a task seems to need a change in the other person's paths, stop and raise it 
 - React Router 8: `RouterProvider` comes from `react-router/dom`, everything else from `react-router`; `react-router-dom` no longer exists.
 - React apps call the API with relative `/api/...` paths; Vite proxies them to the API in development.
 - CI (`.github/workflows/ci.yml`) runs format check, lint, typecheck, test and build on every PR. GitHub Actions are pinned to commit SHAs.
+- Background jobs: BullMQ 6 with ioredis in `apps/worker` (a NestJS app without HTTP). Queue and job names start with the module key; the worker's tests need Redis (`pnpm infra:up`; CI runs a Redis service).
 - Object storage is RustFS (S3-compatible) because MinIO stopped publishing its free Docker image. Code uses the AWS S3 SDK only.
