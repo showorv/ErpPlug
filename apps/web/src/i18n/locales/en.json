@@ -1,0 +1,25 @@
+{
+  "app": {
+    "name": "ErpPlug",
+    "tagline": "Your business, one workspace"
+  },
+  "nav": {
+    "home": "Home"
+  },
+  "home": {
+    "title": "Welcome to ErpPlug",
+    "body": "This is the tenant workspace shell. Module screens appear here once the bootstrap endpoint exists (Phase 1)."
+  },
+  "system": {
+    "apiStatus": "API status",
+    "checking": "Checking…",
+    "up": "Connected",
+    "down": "Not reachable. Is the API running? (pnpm dev)"
+  },
+  "errors": {
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "The page you are looking for does not exist.",
+    "unexpectedTitle": "Something went wrong",
+    "backHome": "Back to home"
+  }
+}
