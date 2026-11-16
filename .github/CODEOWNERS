@@ -1,0 +1,16 @@
+# Required reviewers by path. Later lines win.
+# Default: either person may review.
+*                         @showorv
+
+# Showrov
+/apps/web/                @showorv
+/apps/admin/              @showorv
+/packages/ui/             @showorv
+/infra/                   @showorv
+
+# Uday — TODO: replace UDAY_USERNAME with Uday's GitHub username and uncomment.
+# /kernel/                  @UDAY_USERNAME
+# /prisma/                  @UDAY_USERNAME
+# /packages/module-kit/     @UDAY_USERNAME
+# /modules/accounting/      @UDAY_USERNAME
+# /modules/inventory/       @UDAY_USERNAME
