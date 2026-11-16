@@ -1,0 +1,8 @@
+@import "tailwindcss";
+
+/* Design tokens and shadcn/ui setup arrive with packages/ui (Phase 0, days 7-8). */
+@layer base {
+  html {
+    @apply bg-slate-50 text-slate-900 antialiased;
+  }
+}

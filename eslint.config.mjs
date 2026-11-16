@@ -5,6 +5,10 @@ import js from "@eslint/js";
 import tseslint from "typescript-eslint";
 import prettier from "eslint-config-prettier";
 import globals from "globals";
+import reactHooks from "eslint-plugin-react-hooks";
+import reactRefresh from "eslint-plugin-react-refresh";
+
+const reactFiles = ["apps/web/**/*.{ts,tsx}", "apps/admin/**/*.{ts,tsx}", "**/web/**/*.{ts,tsx}"];
 
 export default tseslint.config(
   {
@@ -23,5 +27,8 @@ export default tseslint.config(
       ],
     },
   },
+  // React apps and every module's web/ folder: hooks rules + Vite fast-refresh safety.
+  { files: reactFiles, ...reactHooks.configs.flat["recommended-latest"] },
+  { files: reactFiles, ...reactRefresh.configs.vite },
   prettier,
 );

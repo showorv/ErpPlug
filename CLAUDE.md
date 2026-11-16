@@ -23,7 +23,7 @@ When a task names a BRD section (for example "BRD 9.3"), read that section befor
 - Every controller action declares its permission with a decorator.
 - New module = copy `modules/notes` and rename.
 - Every pull request adds or updates tests; a new table must pass the isolation suite.
-- All UI strings go through translation files from day one (Bangla comes right after the pilot).
+- All tenant-facing UI strings (`apps/web`, module `web/` folders) go through translation files from day one (Bangla comes right after the pilot). The operator console `apps/admin` is internal and English-only.
 - Contracts first: request/response types land in `packages/contracts` in a small PR before the endpoint or screen is built.
 
 ## Ownership (who reviews what)
@@ -50,12 +50,16 @@ If a task seems to need a change in the other person's paths, stop and raise it 
 - `pnpm format` / `pnpm format:check` — Prettier
 - `pnpm infra:up` / `infra:down` / `infra:reset` / `infra:ps` / `infra:logs` — local Docker services (see `infra/README.md`)
 - `pnpm setup:env` — create `.env` with random local passwords (once per machine)
-- `pnpm --filter @erpplug/api dev` — run only the API
+- `pnpm --filter @erpplug/api dev` (or `@erpplug/web`, `@erpplug/admin`) — run one app only
+- Dev URLs: API http://localhost:3000 (Swagger at /api/docs), web http://localhost:5173, admin http://localhost:5174
 - Coming in Phase 0: `pnpm db:migrate`, `pnpm test:isolation`
 
 ## Stack notes
 
 - NestJS 12 is ESM-only; `apps/api` compiles to CommonJS and loads it via `require(esm)` (Node 22.12+). Check https://docs.nestjs.com/llms.txt before relying on older Nest knowledge.
 - TypeScript is pinned to 6.0.x because typescript-eslint does not support 7 yet.
-- Tests run on Vitest with SWC (`unplugin-swc`) so decorator metadata works.
+- Tests run on Vitest everywhere: SWC (`unplugin-swc`) in `apps/api` for decorator metadata, jsdom + Testing Library in the React apps.
+- React Router 8: `RouterProvider` comes from `react-router/dom`, everything else from `react-router`; `react-router-dom` no longer exists.
+- React apps call the API with relative `/api/...` paths; Vite proxies them to the API in development.
+- CI (`.github/workflows/ci.yml`) runs format check, lint, typecheck, test and build on every PR. GitHub Actions are pinned to commit SHAs.
 - Object storage is RustFS (S3-compatible) because MinIO stopped publishing its free Docker image. Code uses the AWS S3 SDK only.

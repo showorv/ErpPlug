@@ -27,7 +27,7 @@ Requires Node 24+ (see `.nvmrc`) and pnpm (`corepack enable pnpm`).
 pnpm install
 pnpm setup:env   # creates the git-ignored .env with random local passwords
 pnpm infra:up    # PostgreSQL, Redis, object storage, Mailpit (needs Docker Desktop)
-pnpm dev         # every app in watch mode
+pnpm dev         # API :3000, tenant workspace :5173, admin console :5174
 ```
 
 See [infra/README.md](infra/README.md) for the local services.
