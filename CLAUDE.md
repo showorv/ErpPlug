@@ -47,4 +47,13 @@ If a task seems to need a change in the other person's paths, stop and raise it 
 - `pnpm install` — install everything
 - `pnpm dev`, `pnpm build`, `pnpm lint`, `pnpm typecheck`, `pnpm test` — run across the workspace via Turborepo
 - `pnpm format` / `pnpm format:check` — Prettier
+- `pnpm infra:up` / `infra:down` / `infra:reset` / `infra:ps` / `infra:logs` — local Docker services (see `infra/README.md`)
+- `pnpm --filter @erpplug/api dev` — run only the API (needs `.env` copied from `.env.example`)
 - Coming in Phase 0: `pnpm db:migrate`, `pnpm test:isolation`
+
+## Stack notes
+
+- NestJS 12 is ESM-only; `apps/api` compiles to CommonJS and loads it via `require(esm)` (Node 22.12+). Check https://docs.nestjs.com/llms.txt before relying on older Nest knowledge.
+- TypeScript is pinned to 6.0.x because typescript-eslint does not support 7 yet.
+- Tests run on Vitest with SWC (`unplugin-swc`) so decorator metadata works.
+- Object storage is RustFS (S3-compatible) because MinIO stopped publishing its free Docker image. Code uses the AWS S3 SDK only.
